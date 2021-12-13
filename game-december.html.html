@@ -1,0 +1,158 @@
+<html>
+<head>
+<title>game-december.html</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<style type="text/css">
+.s0 { color: #e8bf6a;}
+.s1 { color: #a9b7c6;}
+.s2 { color: #bababa;}
+.s3 { color: #a5c261;}
+.s4 { color: #6897bb;}
+.s5 { color: #cc7832;}
+.s6 { color: #6a8759;}
+</style>
+</head>
+<body bgcolor="#2b2b2b">
+<table CELLSPACING=0 CELLPADDING=5 COLS=1 WIDTH="100%" BGCOLOR="#606060" >
+<tr><td><center>
+<font face="Arial, Helvetica" color="#000000">
+game-december.html</font>
+</center></td></tr></table>
+<pre><span class="s0">&lt;!DOCTYPE </span><span class="s2">html</span><span class="s0">&gt;</span>
+<span class="s0">&lt;html&gt;</span>
+<span class="s0">&lt;head&gt;</span>
+    <span class="s0">&lt;meta </span><span class="s2">name</span><span class="s3">=&quot;viewport&quot; </span><span class="s2">content</span><span class="s3">=&quot;width=device-width, initial-scale=1.0&quot;</span><span class="s0">/&gt;</span>
+    <span class="s0">&lt;style&gt;</span>
+        <span class="s0">canvas </span><span class="s1">{</span>
+            <span class="s2">border</span><span class="s1">:</span><span class="s4">4</span><span class="s3">px solid </span><span class="s4">#d3d3d3</span><span class="s5">;</span>
+            <span class="s2">background-color</span><span class="s1">: </span><span class="s3">lightgrey</span><span class="s5">;</span>
+        <span class="s1">}</span>
+    <span class="s0">&lt;/style&gt;</span>
+<span class="s0">&lt;/head&gt;</span>
+<span class="s0">&lt;body </span><span class="s2">onload</span><span class="s3">=&quot;</span><span class="s1">startGame()</span><span class="s3">&quot;</span><span class="s0">&gt;</span>
+<span class="s0">&lt;script&gt;</span>
+
+    <span class="s5">var </span><span class="s1">myGamePiece</span><span class="s5">;</span>
+    <span class="s5">var </span><span class="s1">myObstacles = []</span><span class="s5">;</span>
+    <span class="s5">var </span><span class="s1">myScore</span><span class="s5">;</span>
+
+    <span class="s5">function </span><span class="s1">startGame() {</span>
+        <span class="s1">myGamePiece = </span><span class="s5">new </span><span class="s1">component(</span><span class="s4">20</span><span class="s5">, </span><span class="s4">20</span><span class="s5">, </span><span class="s6">&quot;purple&quot;</span><span class="s5">, </span><span class="s4">10</span><span class="s5">, </span><span class="s4">110</span><span class="s1">)</span><span class="s5">;</span>
+        <span class="s1">myGamePiece.gravity = </span><span class="s4">0.05</span><span class="s5">;</span>
+        <span class="s1">myScore = </span><span class="s5">new </span><span class="s1">component(</span><span class="s6">&quot;25px&quot;</span><span class="s5">, </span><span class="s6">&quot;Times New Roman&quot;</span><span class="s5">, </span><span class="s6">&quot;navy blue&quot;</span><span class="s5">, </span><span class="s4">280</span><span class="s5">, </span><span class="s4">40</span><span class="s5">, </span><span class="s6">&quot;text&quot;</span><span class="s1">)</span><span class="s5">;</span>
+        <span class="s1">myGameArea.start()</span><span class="s5">;</span>
+    <span class="s1">}</span>
+
+    <span class="s5">var </span><span class="s1">myGameArea = {</span>
+        <span class="s1">canvas : document.createElement(</span><span class="s6">&quot;canvas&quot;</span><span class="s1">)</span><span class="s5">,</span>
+        <span class="s1">start : </span><span class="s5">function</span><span class="s1">() {</span>
+            <span class="s5">this</span><span class="s1">.canvas.width = </span><span class="s4">480</span><span class="s5">;</span>
+            <span class="s5">this</span><span class="s1">.canvas.height = </span><span class="s4">270</span><span class="s5">;</span>
+            <span class="s5">this</span><span class="s1">.context = </span><span class="s5">this</span><span class="s1">.canvas.getContext(</span><span class="s6">&quot;2d&quot;</span><span class="s1">)</span><span class="s5">;</span>
+            <span class="s1">document.body.insertBefore(</span><span class="s5">this</span><span class="s1">.canvas</span><span class="s5">, </span><span class="s1">document.body.childNodes[</span><span class="s4">0</span><span class="s1">])</span><span class="s5">;</span>
+            <span class="s5">this</span><span class="s1">.frameNo = </span><span class="s4">0</span><span class="s5">;</span>
+            <span class="s5">this</span><span class="s1">.interval = setInterval(updateGameArea</span><span class="s5">, </span><span class="s4">20</span><span class="s1">)</span><span class="s5">;</span>
+        <span class="s1">}</span><span class="s5">,</span>
+        <span class="s1">clear : </span><span class="s5">function</span><span class="s1">() {</span>
+            <span class="s5">this</span><span class="s1">.context.clearRect(</span><span class="s4">0</span><span class="s5">, </span><span class="s4">0</span><span class="s5">, this</span><span class="s1">.canvas.width</span><span class="s5">, this</span><span class="s1">.canvas.height)</span><span class="s5">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s5">function </span><span class="s1">component(width</span><span class="s5">, </span><span class="s1">height</span><span class="s5">, </span><span class="s1">color</span><span class="s5">, </span><span class="s1">x</span><span class="s5">, </span><span class="s1">y</span><span class="s5">, </span><span class="s1">type) {</span>
+        <span class="s5">this</span><span class="s1">.type = type</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.score = </span><span class="s4">0</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.width = width</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.height = height</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.speedX = </span><span class="s4">0</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.speedY = </span><span class="s4">0</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.x = x</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.y = y</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.gravity = </span><span class="s4">0</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.gravitySpeed = </span><span class="s4">0</span><span class="s5">;</span>
+        <span class="s5">this</span><span class="s1">.update = </span><span class="s5">function</span><span class="s1">() {</span>
+            <span class="s1">ctx = myGameArea.context</span><span class="s5">;</span>
+            <span class="s5">if </span><span class="s1">(</span><span class="s5">this</span><span class="s1">.type == </span><span class="s6">&quot;text&quot;</span><span class="s1">) {</span>
+                <span class="s1">ctx.font = </span><span class="s5">this</span><span class="s1">.width + </span><span class="s6">&quot; &quot; </span><span class="s1">+ </span><span class="s5">this</span><span class="s1">.height</span><span class="s5">;</span>
+                <span class="s1">ctx.fillStyle = color</span><span class="s5">;</span>
+                <span class="s1">ctx.fillText(</span><span class="s5">this</span><span class="s1">.text</span><span class="s5">, this</span><span class="s1">.x</span><span class="s5">, this</span><span class="s1">.y)</span><span class="s5">;</span>
+            <span class="s1">} </span><span class="s5">else </span><span class="s1">{</span>
+                <span class="s1">ctx.fillStyle = color</span><span class="s5">;</span>
+                <span class="s1">ctx.fillRect(</span><span class="s5">this</span><span class="s1">.x</span><span class="s5">, this</span><span class="s1">.y</span><span class="s5">, this</span><span class="s1">.width</span><span class="s5">, this</span><span class="s1">.height)</span><span class="s5">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s5">this</span><span class="s1">.newPos = </span><span class="s5">function</span><span class="s1">() {</span>
+            <span class="s5">this</span><span class="s1">.gravitySpeed += </span><span class="s5">this</span><span class="s1">.gravity</span><span class="s5">;</span>
+            <span class="s5">this</span><span class="s1">.x += </span><span class="s5">this</span><span class="s1">.speedX</span><span class="s5">;</span>
+            <span class="s5">this</span><span class="s1">.y += </span><span class="s5">this</span><span class="s1">.speedY + </span><span class="s5">this</span><span class="s1">.gravitySpeed</span><span class="s5">;</span>
+            <span class="s5">this</span><span class="s1">.hitBottom()</span><span class="s5">;</span>
+        <span class="s1">}</span>
+        <span class="s5">this</span><span class="s1">.hitBottom = </span><span class="s5">function</span><span class="s1">() {</span>
+            <span class="s5">var </span><span class="s1">rockbottom = myGameArea.canvas.height - </span><span class="s5">this</span><span class="s1">.height</span><span class="s5">;</span>
+            <span class="s5">if </span><span class="s1">(</span><span class="s5">this</span><span class="s1">.y &gt; rockbottom) {</span>
+                <span class="s5">this</span><span class="s1">.y = rockbottom</span><span class="s5">;</span>
+                <span class="s5">this</span><span class="s1">.gravitySpeed = </span><span class="s4">0</span><span class="s5">;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s5">this</span><span class="s1">.crashWith = </span><span class="s5">function</span><span class="s1">(otherobj) {</span>
+            <span class="s5">var </span><span class="s1">myleft = </span><span class="s5">this</span><span class="s1">.x</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">myright = </span><span class="s5">this</span><span class="s1">.x + (</span><span class="s5">this</span><span class="s1">.width)</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">mytop = </span><span class="s5">this</span><span class="s1">.y</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">mybottom = </span><span class="s5">this</span><span class="s1">.y + (</span><span class="s5">this</span><span class="s1">.height)</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">otherleft = otherobj.x</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">otherright = otherobj.x + (otherobj.width)</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">othertop = otherobj.y</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">otherbottom = otherobj.y + (otherobj.height)</span><span class="s5">;</span>
+            <span class="s5">var </span><span class="s1">crash = </span><span class="s5">true;</span>
+            <span class="s5">if </span><span class="s1">((mybottom &lt; othertop) || (mytop &gt; otherbottom) || (myright &lt; otherleft) || (myleft &gt; otherright)) {</span>
+                <span class="s1">crash = </span><span class="s5">false;</span>
+            <span class="s1">}</span>
+            <span class="s5">return </span><span class="s1">crash</span><span class="s5">;</span>
+        <span class="s1">}</span>
+    <span class="s1">}</span>
+
+    <span class="s5">function </span><span class="s1">updateGameArea() {</span>
+        <span class="s5">var </span><span class="s1">x</span><span class="s5">, </span><span class="s1">height</span><span class="s5">, </span><span class="s1">gap</span><span class="s5">, </span><span class="s1">minHeight</span><span class="s5">, </span><span class="s1">maxHeight</span><span class="s5">, </span><span class="s1">minGap</span><span class="s5">, </span><span class="s1">maxGap</span><span class="s5">;</span>
+        <span class="s5">for </span><span class="s1">(i = </span><span class="s4">0</span><span class="s5">; </span><span class="s1">i &lt; myObstacles.length</span><span class="s5">; </span><span class="s1">i += </span><span class="s4">1</span><span class="s1">) {</span>
+            <span class="s5">if </span><span class="s1">(myGamePiece.crashWith(myObstacles[i])) {</span>
+                <span class="s5">return;</span>
+            <span class="s1">}</span>
+        <span class="s1">}</span>
+        <span class="s1">myGameArea.clear()</span><span class="s5">;</span>
+        <span class="s1">myGameArea.frameNo += </span><span class="s4">1</span><span class="s5">;</span>
+        <span class="s5">if </span><span class="s1">(myGameArea.frameNo == </span><span class="s4">1 </span><span class="s1">|| everyinterval(</span><span class="s4">150</span><span class="s1">)) {</span>
+            <span class="s1">x = myGameArea.canvas.width</span><span class="s5">;</span>
+            <span class="s1">minHeight = </span><span class="s4">20</span><span class="s5">;</span>
+            <span class="s1">maxHeight = </span><span class="s4">200</span><span class="s5">;</span>
+            <span class="s1">height = Math.floor(Math.random()*(maxHeight-minHeight+</span><span class="s4">1</span><span class="s1">)+minHeight)</span><span class="s5">;</span>
+            <span class="s1">minGap = </span><span class="s4">50</span><span class="s5">;</span>
+            <span class="s1">maxGap = </span><span class="s4">200</span><span class="s5">;</span>
+            <span class="s1">gap = Math.floor(Math.random()*(maxGap-minGap+</span><span class="s4">1</span><span class="s1">)+minGap)</span><span class="s5">;</span>
+            <span class="s1">myObstacles.push(</span><span class="s5">new </span><span class="s1">component(</span><span class="s4">10</span><span class="s5">, </span><span class="s1">height</span><span class="s5">, </span><span class="s6">&quot;green&quot;</span><span class="s5">, </span><span class="s1">x</span><span class="s5">, </span><span class="s4">0</span><span class="s1">))</span><span class="s5">;</span>
+            <span class="s1">myObstacles.push(</span><span class="s5">new </span><span class="s1">component(</span><span class="s4">10</span><span class="s5">, </span><span class="s1">x - height - gap</span><span class="s5">, </span><span class="s6">&quot;green&quot;</span><span class="s5">, </span><span class="s1">x</span><span class="s5">, </span><span class="s1">height + gap))</span><span class="s5">;</span>
+        <span class="s1">}</span>
+        <span class="s5">for </span><span class="s1">(i = </span><span class="s4">0</span><span class="s5">; </span><span class="s1">i &lt; myObstacles.length</span><span class="s5">; </span><span class="s1">i += </span><span class="s4">1</span><span class="s1">) {</span>
+            <span class="s1">myObstacles[i].x += -</span><span class="s4">1</span><span class="s5">;</span>
+            <span class="s1">myObstacles[i].update()</span><span class="s5">;</span>
+        <span class="s1">}</span>
+        <span class="s1">myScore.text=</span><span class="s6">&quot;SCORE: &quot; </span><span class="s1">+ myGameArea.frameNo</span><span class="s5">;</span>
+        <span class="s1">myScore.update()</span><span class="s5">;</span>
+        <span class="s1">myGamePiece.newPos()</span><span class="s5">;</span>
+        <span class="s1">myGamePiece.update()</span><span class="s5">;</span>
+    <span class="s1">}</span>
+
+    <span class="s5">function </span><span class="s1">everyinterval(n) {</span>
+        <span class="s5">if </span><span class="s1">((myGameArea.frameNo / n) % </span><span class="s4">1 </span><span class="s1">== </span><span class="s4">0</span><span class="s1">) {</span><span class="s5">return true;</span><span class="s1">}</span>
+        <span class="s5">return false;</span>
+    <span class="s1">}</span>
+
+    <span class="s5">function </span><span class="s1">accelerate(n) {</span>
+        <span class="s1">myGamePiece.gravity = n</span><span class="s5">;</span>
+    <span class="s1">}</span>
+<span class="s0">&lt;/script&gt;</span>
+
+<span class="s0">&lt;p&gt;</span><span class="s1">How long can you avoid the poles?</span><span class="s0">&lt;/p&gt;</span>
+<span class="s0">&lt;/body&gt;</span>
+<span class="s0">&lt;/html&gt;</span>
+</pre>
+</body>
+</html>
